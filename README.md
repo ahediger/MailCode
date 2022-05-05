@@ -15,7 +15,7 @@ The language is currently able to:
 * Loop a block of code a fixed number of times
 * Perform basic math opperations on a variable and change its value
 
-To run the code on a command line simply run MailCode.py with a .txt program as a paramater:  
-python MailCode.py code.txt
+To run the code on a command line simply run mailCode.py with a .txt program as a paramater:  
+`python mailCode.py code.txt`
 
-Sample programs have been provided.
+3 sample programs have been provided.
