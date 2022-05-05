@@ -7,7 +7,8 @@ Dear MailCode,
 Thanks,  
 Drew  
 
-The recipient and sender can be whoever you would like, but I find it amusing to address the letter to the language itself.  
+The recipient and sender can be whatever you would like, but I find it amusing to address the letter to the language itself.  
+These names can also be used as the name of the file or function, and the name of whoever created the code as a means of documentation.  
 
 The language is currently able to:
 * Create and store integer variables
