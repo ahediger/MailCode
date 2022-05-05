@@ -1,0 +1,9 @@
+Greetings Robot,
+x is 0.
+Tell me x.
+Tell me 'Increasing by one five times'.
+Do this 5 times:
+~Increase x by 1.
+Tell me x.
+Thanks,
+Coder

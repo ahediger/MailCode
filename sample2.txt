@@ -1,0 +1,8 @@
+Hello Code,
+x is 2.
+Multiply x by 5.
+Decrease x by 2.
+Divide x by 2.
+Tell me x.
+Sincerely,
+Drew
