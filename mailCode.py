@@ -1,50 +1,5 @@
+import sys
 from lark import Lark
-
-my_grammar = """
-?start: _greeting codeblock _closing
-_greeting: "Dear " _WORD ","
-        | "Hello " _WORD ","
-        | "Greetings " _WORD ","
-
-codeblock: statement+
-_bulletcodeblock: ("~" statement)+
-?statement: print
-        | forloop
-        //| whileloop
-        //| if
-        | assignment
-        | math
-print: "Tell me '" expression+ "'."
-        | "Tell me" var "."
-forloop: "Do this" INT "times:" _bulletcodeblock
-//whileloop: "As long as" expression ":"  _bulletcodeblock
-//if: "If" expression ":" _bulletcodeblock "If not:" _bulletcodeblock
-assignment: var "is" expression "."
-?expression: CNAME
-        | string
-        | literal
-        //| expression "is greater than" expression -> gt
-        //| expression "is less than" expression -> lt
-        //| expression "is less than or equal to" expression -> le
-        //| expression "is greater than or equal to" expression -> ge
-        //| expression "is equal to" expression -> eq
-math: "Increase" var "by" expression "." -> add
-        | "Decrease" var "by" expression "." -> sub
-        | "Divide" var "by" expression "." -> div
-        | "Multiply" var "by" expression "." -> mul
-?literal: INT
-var: CNAME
-_WORD: WORD
-string: WORD [WS WORD]+
-_closing: "Sincerely," _WORD
-        | "Thanks," _WORD
-%import common.CNAME
-%import common.NEWLINE
-%import common.INT
-%import common.WORD
-%import common.WS
-%ignore WS
-"""
 
 def eval_tree(t, env):
     if t.data == 'codeblock':
@@ -83,24 +38,52 @@ def eval_tree(t, env):
     else:
         raise SyntaxError('unrecongnized tree')
 
-parser = Lark(my_grammar)
-program= """
-Dear MailCode,
-Tell me 'Hello World'.
-x is 0.
-Do this 5 times:
-~Tell me 'Increasing x by one'.
-~Increase x by 1.
-Tell me x.
-Thanks,
-Drew
-"""
+def getProgram(file):
+    with open(file) as f:
+        program = f.read()
+        f.close()
+    return program
 
-parse_tree = parser.parse(program)
+if __name__ == '__main__':
+    my_grammar = """
+    ?start: _greeting codeblock _closing
+    _greeting: "Dear " _WORD ","
+            | "Hello " _WORD ","
+            | "Greetings " _WORD ","
 
-env = {
-}
-
-#print(parse_tree.pretty())
-eval_tree(parse_tree, env)
-
+    codeblock: statement+
+    _bulletcodeblock: ("~" statement)+
+    ?statement: print
+            | forloop
+            | assignment
+            | math
+    print: "Tell me '" expression+ "'."
+            | "Tell me" var "."
+    forloop: "Do this" INT "times:" _bulletcodeblock
+    assignment: var "is" expression "."
+    ?expression: CNAME
+            | string
+            | literal
+    math: "Increase" var "by" expression "." -> add
+            | "Decrease" var "by" expression "." -> sub
+            | "Divide" var "by" expression "." -> div
+            | "Multiply" var "by" expression "." -> mul
+    ?literal: INT
+    var: CNAME
+    _WORD: WORD
+    string: WORD [WS WORD]+
+    _closing: "Sincerely," _WORD
+            | "Thanks," _WORD
+    %import common.CNAME
+    %import common.NEWLINE
+    %import common.INT
+    %import common.WORD
+    %import common.WS
+    %ignore WS
+    """
+    parser = Lark(my_grammar)
+    program = getProgram(sys.argv[1])
+    parse_tree = parser.parse(program)
+    env = {
+    }
+    eval_tree(parse_tree, env)
